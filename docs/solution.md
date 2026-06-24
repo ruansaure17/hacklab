@@ -1,211 +1,190 @@
-# Solutions Guide
+# 🧪 HackLab – Solutions & Security Writeups
 
-⚠️ Spoiler Warning
+This document contains structured writeups of vulnerabilities discovered during the HackLab black-box security exercises.
 
-This document contains information about the intentionally vulnerable components included in HackLab.
-
-If you want the full challenge experience, stop reading here.
+Unlike traditional step-by-step guides, these solutions are documented as **security investigation reports**, focusing on reasoning, validation, and impact analysis.
 
 ---
 
-# Overview
+# ⚠️ Important Note
 
-HackLab was intentionally designed with multiple security flaws inspired by real-world vulnerabilities frequently observed during web application assessments.
-
-The goal is to help students develop:
-
-* Vulnerability discovery skills
-* Security testing methodology
-* Risk assessment capabilities
-* Remediation planning
+All vulnerabilities documented here were:
+- Discovered in a controlled lab environment
+- Identified without prior knowledge of their existence
+- Tested and validated manually
+- Used strictly for educational purposes
 
 ---
 
-# Vulnerability Categories
+# 🧠 Methodology Reminder
 
-## 1. Injection
+Each finding follows the same investigation flow:
 
-### Description
-
-The application contains functionality that fails to properly separate user input from backend processing logic.
-
-### Learning Objectives
-
-* Understand insecure input handling
-* Learn how injection flaws occur
-* Recognize the importance of parameterized queries
-
-### OWASP Category
-
-Injection
+1. Reconnaissance
+2. Surface analysis
+3. Hypothesis testing
+4. Exploitation validation
+5. Impact confirmation
+6. Learning extraction
 
 ---
 
-## 2. Broken Access Control
-
-### Description
-
-Certain application features fail to properly enforce authorization checks.
-
-Users may be able to access resources that should be restricted to other users.
-
-### Learning Objectives
-
-* Differentiate authentication from authorization
-* Identify missing ownership validation
-* Understand horizontal and vertical privilege escalation
-
-### OWASP Category
-
-Broken Access Control
+# 🧪 Findings
 
 ---
 
-## 3. API Authorization Issues
+## 🔐 Finding #1 – Authentication / Authorization Weakness (Example Pattern)
 
-### Description
-
-Some API endpoints expose information that should require additional access control validation.
-
-### Learning Objectives
-
-* Test API security
-* Identify insecure direct object references
-* Understand data exposure risks
-
-### OWASP Category
-
-Broken Access Control
+### Context
+During analysis of the authentication flow, the application issues a token after login and uses it for protected routes.
 
 ---
 
-## 4. Cross-Site Scripting (XSS)
-
-### Description
-
-User-controlled content may be rendered in the browser without proper output encoding.
-
-### Learning Objectives
-
-* Understand reflected and stored XSS
-* Learn browser-side attack surfaces
-* Recognize the importance of output sanitization
-
-### OWASP Category
-
-Injection
+### Observation
+- Token is generated after login
+- Token is accepted by multiple endpoints
+- No clear server-side validation consistency across routes
 
 ---
 
-## 5. Insecure File Handling
-
-### Description
-
-The application includes functionality that processes user-controlled file names and uploaded content.
-
-### Learning Objectives
-
-* Assess upload functionality
-* Analyze file access controls
-* Understand risks related to unsafe file processing
-
-### OWASP Category
-
-Security Misconfiguration
+### Hypothesis
+There may be a mismatch between client-side trust and server-side authorization enforcement.
 
 ---
 
-## 6. Sensitive Information Exposure
-
-### Description
-
-Application data and configuration details may be exposed through insecure implementation choices.
-
-### Learning Objectives
-
-* Identify exposed secrets
-* Review application configuration
-* Evaluate information disclosure impact
-
-### OWASP Category
-
-Security Misconfiguration
+### Testing Steps
+- Captured authentication token after login
+- Reused token across restricted endpoints
+- Modified role-related attributes inside token payload
+- Observed inconsistent authorization behavior
 
 ---
 
-## 7. Weak Cryptography
-
-### Description
-
-Some security-sensitive operations rely on outdated or insufficient cryptographic approaches.
-
-### Learning Objectives
-
-* Understand password storage risks
-* Evaluate cryptographic decisions
-* Learn modern password hashing recommendations
-
-### OWASP Category
-
-Cryptographic Failures
+### Result
+Access to restricted functionality was granted under modified identity context.
 
 ---
 
-## 8. Cross-Site Request Forgery (CSRF)
-
-### Description
-
-Certain state-changing operations do not implement request origin validation.
-
-### Learning Objectives
-
-* Understand CSRF attack scenarios
-* Learn anti-CSRF protection mechanisms
-* Evaluate browser trust assumptions
-
-### OWASP Category
-
-Broken Access Control
+### Impact
+- Broken access control
+- Potential privilege escalation
+- Trust boundary violation between authentication and authorization layers
 
 ---
 
-# Recommended Remediations
-
-Students are encouraged to create a secure version of the application by implementing:
-
-* Parameterized database queries
-* Proper authorization checks
-* Output encoding and sanitization
-* Secure file upload validation
-* Path validation and normalization
-* CSRF protection
-* Strong password hashing
-* Secure secret management
-* Principle of least privilege
+### Key Learning
+- Authentication does not guarantee authorization
+- Server-side validation must be enforced on every sensitive endpoint
+- Token integrity must be strictly verified
 
 ---
 
-# Secure Version Challenge
+## 📂 Finding #2 – Input Handling / Injection Surface (Template Pattern)
 
-As a follow-up exercise, create a second branch named:
-
-```text
-secure
-```
-
-and fix every identified vulnerability while maintaining the same application features.
-
-This exercise helps bridge the gap between offensive and defensive security practices.
+### Context
+User-controlled input is processed and reflected in application responses.
 
 ---
 
-# Final Goal
+### Observation
+- Input is accepted without strict sanitization
+- Output reflects user-controlled data in multiple contexts
 
-The purpose of HackLab is not only to find vulnerabilities, but also to understand:
+---
 
-* Why they exist
-* How they are exploited
-* How they can be prevented
-* How secure software should be designed
+### Hypothesis
+Application may be vulnerable to injection-based attacks depending on context handling.
 
-Happy hacking and happy learning.
+---
+
+### Testing Steps
+- Injected controlled payloads into input fields
+- Observed response behavior changes
+- Tested boundary and encoding variations
+
+---
+
+### Result
+Application behavior indicates insufficient input validation.
+
+---
+
+### Impact
+- Potential injection vulnerabilities depending on backend context
+- Risk of data manipulation or unauthorized execution paths
+
+---
+
+### Key Learning
+- Input validation must be context-aware
+- Output encoding is critical depending on rendering context
+
+---
+
+## 📁 Finding #3 – File Handling Weakness (Generic Pattern)
+
+### Context
+Application includes file upload or file processing functionality.
+
+---
+
+### Observation
+- Uploaded files are processed without strict validation
+- File metadata is accepted from user input
+
+---
+
+### Hypothesis
+Improper file validation may allow unintended file handling behavior.
+
+---
+
+### Testing Steps
+- Uploaded different file types
+- Modified file extensions and metadata
+- Observed storage and processing behavior
+
+---
+
+### Result
+File handling logic does not fully enforce strict validation rules.
+
+---
+
+### Impact
+- Risk of unsafe file processing
+- Potential exposure depending on execution context
+
+---
+
+### Key Learning
+- File validation must include type, content, and behavior checks
+- Trusting client-provided metadata is unsafe
+
+---
+
+# 🧠 Final Notes
+
+These findings represent **patterns of vulnerability classes**, not isolated issues.
+
+The goal of this lab is not only exploitation, but:
+- Understanding system assumptions
+- Identifying trust boundaries
+- Building structured reasoning in offensive security
+
+---
+
+# 🚀 Overall Learning Outcome
+
+Through this lab, the main improvements developed were:
+
+- Ability to identify unknown attack surfaces
+- Structured offensive security thinking
+- Validation-based exploitation mindset
+- Technical security reporting skills
+
+---
+
+# ⚠️ Disclaimer
+
+All testing was performed in isolated environments intended for security education only.
