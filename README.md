@@ -1,13 +1,20 @@
-# HackLab
+# HackLab – Black-box Offensive Security Lab
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![Flask](https://img.shields.io/badge/Flask-Web%20App-black)
 ![Security](https://img.shields.io/badge/Security-Training-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A deliberately vulnerable web application built with Flask for web security training.
 
-HackLab was created to help students and aspiring security professionals practice identifying, analyzing, and documenting common web application vulnerabilities in a safe, controlled environment.
+This project is a deliberately designed black-box environment for offensive security training.
+
+Unlike guided labs, the vulnerabilities are intentionally unknown at the start of each exercise. The objective is to simulate real-world penetration testing scenarios where the attacker must:
+
+- Discover attack surfaces
+- Identify vulnerabilities
+- Validate exploitability
+- Develop and test payloads
+- Document findings independently
 
 
 ## Disclaimer
