@@ -1,0 +1,42 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+
+venv/
+.venv/
+env/
+
+# Flask
+
+instance/
+
+# Database
+
+lab.db
+*.db
+
+# Uploads
+
+uploads/
+
+# Environment Variables
+
+.env
+
+# IDEs
+
+.vscode/
+.idea/
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Docker
+
+docker-data/

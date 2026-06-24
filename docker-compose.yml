@@ -1,0 +1,14 @@
+services:
+  hacklab:
+    build: .
+    container_name: hacklab
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./uploads:/app/uploads
+      - ./files:/app/files
+      - ./lab.db:/app/lab.db
+
+    restart: unless-stopped

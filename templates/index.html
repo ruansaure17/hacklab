@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}HackLab - Início{% endblock %}
+{% block content %}
+<h1>Bem-vindo ao HackLab</h1>
+<p>Um mini blog/sistema de usuários para fins de estudo de segurança web.</p>
+{% if user %}<p>Logado como <strong>{{ user }}</strong></p>{% endif %}
+
+<h2>Posts recentes</h2>
+<ul>
+  {% for post in posts %}
+  <li><a href="{{ url_for('post_detail', post_id=post['id']) }}">{{ post['title'] }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

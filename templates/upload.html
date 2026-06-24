@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+<h1>Upload de arquivo</h1>
+{% if message %}<p>{{ message }}</p>{% endif %}
+<form method="post" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <button type="submit">Enviar</button>
+</form>
+
+<h2>Arquivos enviados</h2>
+<ul>
+  {% for f in files %}
+  <li><a href="{{ url_for('uploaded_file', filename=f) }}">{{ f }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

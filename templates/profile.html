@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Perfil de {{ profile['username'] }}{% endblock %}
+{% block content %}
+<h1>Perfil de {{ profile['username'] }}</h1>
+<p><strong>Bio:</strong> {{ profile['bio']|safe }}</p>
+<p><strong>Papel:</strong> {{ profile['role'] }}</p>
+
+{% if viewer %}
+<p><a href="{{ url_for('edit_profile', username=profile['username']) }}">Editar este perfil</a></p>
+{% endif %}
+{% endblock %}

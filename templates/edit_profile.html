@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Editar perfil{% endblock %}
+{% block content %}
+<h1>Editar perfil de {{ profile['username'] }}</h1>
+<form method="post">
+  <label>Bio:</label><br>
+  <textarea name="bio" rows="4" cols="50">{{ profile['bio'] }}</textarea><br>
+  <button type="submit">Salvar</button>
+</form>
+{% endblock %}

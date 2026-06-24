@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ post['title'] }}{% endblock %}
+{% block content %}
+<h1>{{ post['title'] }}</h1>
+<p>{{ post['body'] }}</p>
+
+<h2>Comentários</h2>
+<ul>
+  {% for c in comments %}
+  <li><strong>{{ c['author'] }}:</strong> {{ c['content']|safe }}</li>
+  {% endfor %}
+</ul>
+
+<h3>Adicionar comentário</h3>
+<form method="post">
+  <label>Nome: <input type="text" name="author"></label><br>
+  <label>Comentário:</label><br>
+  <textarea name="content" rows="3" cols="50"></textarea><br>
+  <button type="submit">Enviar</button>
+</form>
+{% endblock %}

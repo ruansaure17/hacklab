@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Buscar{% endblock %}
+{% block content %}
+<h1>Buscar posts</h1>
+<form method="get">
+  <input type="text" name="q" value="{{ query }}" placeholder="termo de busca">
+  <button type="submit">Buscar</button>
+</form>
+
+{% if query %}
+<p>Resultados para: {{ query|safe }}</p>
+<ul>
+  {% for r in results %}
+  <li><a href="{{ url_for('post_detail', post_id=r['id']) }}">{{ r['title'] }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

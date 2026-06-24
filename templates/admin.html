@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+<h1>Painel administrativo</h1>
+{% if not authorized %}
+<p class="error">Acesso restrito. Faça login como administrador.</p>
+{% else %}
+<table border="1" cellpadding="6">
+  <tr><th>ID</th><th>Usuário</th><th>Papel</th><th>Nota secreta</th><th>Ações</th></tr>
+  {% for u in users %}
+  <tr>
+    <td>{{ u['id'] }}</td>
+    <td>{{ u['username'] }}</td>
+    <td>{{ u['role'] }}</td>
+    <td>{{ u['secret_note'] }}</td>
+    <td><a href="{{ url_for('admin_delete', user_id=u['id']) }}">Excluir</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

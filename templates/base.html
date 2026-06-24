@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}HackLab{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="{{ url_for('index') }}">HackLab</a>
+    <a href="{{ url_for('search') }}">Buscar</a>
+    <a href="{{ url_for('upload') }}">Upload</a>
+    <a href="{{ url_for('admin') }}">Admin</a>
+    {% if session.get('username') %}
+      <a href="{{ url_for('profile', username=session.get('username')) }}">Meu perfil</a>
+      <a href="{{ url_for('logout') }}">Sair ({{ session.get('username') }})</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Registrar</a>
+    {% endif %}
+  </nav>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

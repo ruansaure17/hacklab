@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Visualizar arquivo{% endblock %}
+{% block content %}
+<h1>Visualizador de arquivos públicos</h1>
+<form method="get">
+  <input type="text" name="name" value="{{ name }}">
+  <button type="submit">Abrir</button>
+</form>
+<pre>{{ content }}</pre>
+{% endblock %}
